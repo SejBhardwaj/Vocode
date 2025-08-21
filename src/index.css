@@ -1,0 +1,300 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Futuristic Weather App Design System */
+
+@layer base {
+  :root {
+    /* Core backgrounds - Dark theme with gradients */
+    --background: 240 10% 5%;
+    --background-secondary: 241 13% 8%;
+    --foreground: 210 40% 98%;
+
+    /* Glass morphism cards */
+    --glass: 240 10% 15%;
+    --glass-border: 264 83% 70%;
+    --glass-hover: 240 15% 20%;
+    
+    /* Neon accents */
+    --neon-primary: 264 83% 70%;
+    --neon-secondary: 280 100% 80%;
+    --neon-success: 142 76% 36%;
+    --neon-warning: 38 92% 50%;
+    --neon-danger: 0 84% 60%;
+
+    /* Weather themed colors */
+    --weather-sunny: 45 93% 47%;
+    --weather-rainy: 217 91% 60%;
+    --weather-cloudy: 214 32% 91%;
+    --weather-stormy: 263 70% 50%;
+    --weather-snowy: 210 40% 98%;
+
+    /* Card system */
+    --card: 240 10% 8%;
+    --card-foreground: 210 40% 98%;
+    --card-border: 264 83% 70%;
+
+    /* Interactive elements */
+    --primary: 264 83% 70%;
+    --primary-foreground: 210 40% 98%;
+    --primary-glow: 264 83% 80%;
+
+    --secondary: 240 15% 20%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 280 100% 80%;
+    --accent-foreground: 240 10% 5%;
+
+    --muted: 240 10% 15%;
+    --muted-foreground: 215 20% 65%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 240 15% 20%;
+    --input: 240 15% 20%;
+    --ring: 264 83% 70%;
+
+    /* Custom gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(264 83% 70%), hsl(280 100% 80%));
+    --gradient-weather: linear-gradient(180deg, hsl(240 10% 5%), hsl(241 13% 8%));
+    --gradient-glass: linear-gradient(135deg, hsla(240 10% 15% / 0.8), hsla(264 83% 70% / 0.1));
+    --gradient-neon: linear-gradient(90deg, hsl(264 83% 70%), hsl(280 100% 80%), hsl(217 91% 60%));
+    --gradient-search-glow: linear-gradient(45deg, hsl(280 100% 80%), hsl(217 91% 60%), hsl(142 76% 36%), hsl(264 83% 70%));
+
+    /* Shadows and glows */
+    --shadow-glass: 0 8px 32px hsla(240 10% 5% / 0.7);
+    --shadow-neon: 0 0 20px hsla(264 83% 70% / 0.3);
+    --shadow-elevated: 0 25px 50px hsla(240 10% 5% / 0.8);
+
+    /* Animation timing */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 1rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Enhanced dark theme for glassmorphism */
+    --background: 240 10% 3%;
+    --background-secondary: 241 13% 6%;
+    --glass: 240 10% 10%;
+    --glass-hover: 240 15% 15%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground min-h-screen;
+    background: var(--gradient-weather);
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Glass morphism utilities */
+  .glass {
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsla(264 83% 70% / 0.2);
+    box-shadow: var(--shadow-glass);
+  }
+
+  .glass-hover {
+    @apply transition-all duration-300;
+  }
+
+  .glass-hover:hover {
+    background: linear-gradient(135deg, hsla(240 15% 20% / 0.9), hsla(264 83% 70% / 0.15));
+    border-color: hsla(264 83% 70% / 0.4);
+    box-shadow: var(--shadow-neon);
+    transform: translateY(-2px);
+  }
+
+  /* Neon glow effects */
+  .neon-glow {
+    box-shadow: 0 0 20px hsla(264 83% 70% / 0.5), 0 0 40px hsla(264 83% 70% / 0.3);
+  }
+
+  .weather-card {
+    @apply glass glass-hover rounded-2xl p-6;
+  }
+
+  /* Animated backgrounds */
+  .animated-bg {
+    background: var(--gradient-weather);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Weather icon animations */
+  .weather-icon {
+    @apply transition-transform duration-300;
+  }
+
+  .weather-icon:hover {
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  /* Floating animation */
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Pulse glow */
+  .pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    from { box-shadow: 0 0 20px hsla(264 83% 70% / 0.3); }
+    to { box-shadow: 0 0 40px hsla(264 83% 70% / 0.6); }
+  }
+
+  /* Intense vibrant neon glow matching reference image */
+  .search-glow {
+    position: relative;
+    overflow: visible;
+  }
+
+  .search-glow::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(90deg, hsl(320 100% 70%), hsl(280 100% 80%), hsl(240 100% 75%));
+    border-radius: calc(var(--radius) + 2px);
+    z-index: -1;
+    filter: blur(0.5px);
+    box-shadow: 
+      0 0 15px hsl(300 100% 75%),
+      0 0 30px hsl(280 100% 70%),
+      0 0 45px hsl(260 100% 65%);
+  }
+
+  .search-glow::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    background: linear-gradient(90deg, hsl(320 100% 60%), hsl(280 100% 70%), hsl(240 100% 65%));
+    border-radius: calc(var(--radius) + 8px);
+    z-index: -2;
+    filter: blur(4px);
+    opacity: 0.8;
+    box-shadow: 
+      0 0 30px hsl(320 100% 60%),
+      0 0 60px hsl(300 100% 65%),
+      0 0 90px hsl(280 100% 60%),
+      0 0 120px hsl(260 100% 55%);
+    animation: intensiveGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes intensiveGlow {
+    0% { 
+      opacity: 0.6;
+      transform: scale(0.98);
+    }
+    100% { 
+      opacity: 1;
+      transform: scale(1.02);
+    }
+  }
+
+  /* Central search glow for homepage */
+  .search-glow-center {
+    position: relative;
+    overflow: visible;
+  }
+
+  .search-glow-center::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(90deg, hsl(300 100% 70%), hsl(280 100% 80%), hsl(260 100% 75%));
+    border-radius: calc(var(--radius) + 11px);
+    z-index: -1;
+    filter: blur(1px);
+    box-shadow: 
+      0 0 20px hsl(300 100% 70%),
+      0 0 40px hsl(280 100% 65%),
+      0 0 60px hsl(260 100% 60%);
+    animation: centerGlow 3s ease-in-out infinite alternate;
+  }
+
+  .search-glow-center::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    background: linear-gradient(90deg, hsl(320 100% 60%), hsl(280 100% 70%), hsl(240 100% 65%));
+    border-radius: calc(var(--radius) + 16px);
+    z-index: -2;
+    filter: blur(5px);
+    opacity: 0.7;
+    box-shadow: 
+      0 0 40px hsl(320 100% 55%),
+      0 0 80px hsl(300 100% 60%),
+      0 0 120px hsl(280 100% 55%);
+    animation: centerGlow 3s ease-in-out infinite;
+  }
+
+  /* Search button glow */
+  .search-button-glow {
+    box-shadow: 
+      0 0 15px hsl(280 100% 70%),
+      0 0 30px hsl(260 100% 65%),
+      0 0 45px hsl(300 100% 60%);
+  }
+
+  @keyframes centerGlow {
+    0% { 
+      opacity: 0.5;
+      transform: scale(0.98);
+    }
+    100% { 
+      opacity: 1;
+      transform: scale(1.01);
+    }
+  }
+}
