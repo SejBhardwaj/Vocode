@@ -6,18 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VOCODE - AI Website Builder</title>
     
-    <!-- Critical resource hints -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- AGGRESSIVE Spline preloading -->
     <link rel="preconnect" href="https://prod.spline.design" crossorigin>
     <link rel="dns-prefetch" href="https://prod.spline.design">
+    <link rel="preload" href="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" as="fetch" crossorigin="anonymous">
     
-    <!-- Preload critical font -->
+    <!-- Start downloading robot IMMEDIATELY -->
+    <script>
+      // Ultra-aggressive preload - start fetching before anything else
+      const robotUrl = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode';
+      fetch(robotUrl, { 
+        mode: 'cors', 
+        cache: 'force-cache',
+        credentials: 'omit'
+      }).catch(() => {});
+    </script>
+    
+    <!-- Font preloading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- Preload Spline scene -->
-    <link rel="preload" href="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode" as="fetch" crossorigin>
   </head>
   <body>
     <div id="root"></div>

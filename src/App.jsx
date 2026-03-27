@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import LoadingPage from './components/LoadingPage'
 import MainPage from './components/MainPage'
 import HowItWorksPage from './components/HowItWorksPage'
@@ -10,24 +10,6 @@ export default function App() {
   const [page, setPage] = useState('loading')
   const [idea, setIdea] = useState('')
   const [selectedPlan, setSelectedPlan] = useState(null)
-
-  // Preload Spline robot as soon as app mounts
-  useEffect(() => {
-    const dns = document.createElement('link')
-    dns.rel = 'dns-prefetch'
-    dns.href = 'https://prod.spline.design'
-    document.head.appendChild(dns)
-
-    const preconnect = document.createElement('link')
-    preconnect.rel = 'preconnect'
-    preconnect.href = 'https://prod.spline.design'
-    preconnect.crossOrigin = 'anonymous'
-    document.head.appendChild(preconnect)
-
-    fetch('https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode', {
-      mode: 'cors', cache: 'force-cache'
-    }).catch(() => {})
-  }, [])
 
   const handleLoadingComplete = useCallback(() => setPage('main'), [])
   const handleNavigate = useCallback((p) => setPage(p), [])
