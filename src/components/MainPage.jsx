@@ -1,22 +1,25 @@
 import LightRays from './ui/LightRays'
 import { SplineScene } from './ui/splite'
-import { ContainerScroll } from './ui/container-scroll-animation'
 import { AnimatedTextContent } from './ui/animated-text-content'
 import { CpuArchitecture } from './ui/cpu-architecture'
 import { Timeline } from './ui/timeline'
 import { BentoGridDemo } from './ui/bento-grid-demo'
 import { Footer } from './ui/footer'
-import { useState, useEffect, useRef, lazy, Suspense } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Briefcase, Award, GraduationCap, MapPin } from 'lucide-react'
 import Navbar from './Navbar'
 
 export default function MainPage({ onNavigate, currentPage }) {
   const [showCpuSection, setShowCpuSection] = useState(false)
   const [showBentoSection, setShowBentoSection] = useState(false)
+  const [enableLightRays, setEnableLightRays] = useState(false)
   const cpuSectionRef = useRef(null)
   const bentoSectionRef = useRef(null)
 
   useEffect(() => {
+    // Enable LightRays after initial render to speed up page load
+    const timer = setTimeout(() => setEnableLightRays(true), 100)
+
     const cpuObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -41,6 +44,7 @@ export default function MainPage({ onNavigate, currentPage }) {
     if (bentoSectionRef.current) bentoObserver.observe(bentoSectionRef.current)
 
     return () => {
+      clearTimeout(timer)
       cpuObserver.disconnect()
       bentoObserver.disconnect()
     }
@@ -50,23 +54,25 @@ export default function MainPage({ onNavigate, currentPage }) {
     <div className="relative bg-black min-h-screen">
       <Navbar onNavigate={onNavigate} currentPage={currentPage} />
 
-      {/* Light Rays Background */}
-      <div className="fixed inset-0 z-[50] pointer-events-none">
-        <LightRays
-          raysOrigin="top-center"
-          raysColor="#ffffff"
-          raysSpeed={1}
-          lightSpread={1.0}
-          rayLength={3}
-          followMouse={true}
-          mouseInfluence={0.1}
-          noiseAmount={0}
-          distortion={0}
-          pulsating={false}
-          fadeDistance={1}
-          saturation={1}
-        />
-      </div>
+      {/* Light Rays Background - Delayed for faster initial load */}
+      {enableLightRays && (
+        <div className="fixed inset-0 z-[50] pointer-events-none">
+          <LightRays
+            raysOrigin="top-center"
+            raysColor="#ffffff"
+            raysSpeed={1}
+            lightSpread={1.0}
+            rayLength={3}
+            followMouse={true}
+            mouseInfluence={0.1}
+            noiseAmount={0}
+            distortion={0}
+            pulsating={false}
+            fadeDistance={1}
+            saturation={1}
+          />
+        </div>
+      )}
 
       {/* Main hero section */}
       <div className="relative z-10 min-h-screen pt-20">
@@ -144,19 +150,18 @@ export default function MainPage({ onNavigate, currentPage }) {
       </div>
 
       {/* Scroll Animation Section */}
-      <div className="relative z-10 -mt-10">
-        <ContainerScroll
-          titleComponent={
-            <>
-              <h1 className="text-3xl md:text-5xl font-bold leading-tight">
-                <span className="text-white">Where ideas effortlessly</span><br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-200">become websites</span>
-              </h1>
-            </>
-          }
-        >
-          <AnimatedTextContent />
-        </ContainerScroll>
+      <div className="relative z-10 -mt-10 py-20">
+        <div className="max-w-5xl mx-auto text-center mb-12">
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight">
+            <span className="text-white">Where ideas effortlessly</span><br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-200">become websites</span>
+          </h1>
+        </div>
+        <div className="max-w-5xl mx-auto border-4 border-[#6C6C6C] p-2 md:p-6 bg-[#222222] rounded-[30px] shadow-2xl">
+          <div className="h-[30rem] md:h-[40rem] w-full overflow-hidden rounded-2xl bg-zinc-900 md:p-4">
+            {enableLightRays && <AnimatedTextContent />}
+          </div>
+        </div>
       </div>
 
       {/* CPU Architecture Section */}

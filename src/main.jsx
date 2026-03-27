@@ -1,7 +1,15 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
+
+// Register service worker for aggressive caching
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {
+      // Silently fail if service worker registration fails
+    })
+  })
+}
 
 // ULTRA-EARLY robot preloading - before React even starts
 const preloadRobotImmediately = () => {
@@ -18,20 +26,24 @@ const preloadRobotImmediately = () => {
   preconnect.crossOrigin = 'anonymous'
   document.head.appendChild(preconnect)
   
-  // Preload
-  const preload = document.createElement('link')
-  preload.rel = 'preload'
-  preload.href = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
-  preload.as = 'fetch'
-  preload.crossOrigin = 'anonymous'
-  document.head.appendChild(preload)
+  // Aggressive prefetch with high priority
+  const prefetch = document.createElement('link')
+  prefetch.rel = 'prefetch'
+  prefetch.href = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
+  prefetch.as = 'fetch'
+  prefetch.crossOrigin = 'anonymous'
+  document.head.appendChild(prefetch)
+
+  // Start fetching immediately in background
+  fetch('https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode', {
+    mode: 'cors',
+    cache: 'force-cache',
+    priority: 'high'
+  }).catch(() => {})
 }
 
 // Start preloading immediately
 preloadRobotImmediately()
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// Remove StrictMode for production performance
+createRoot(document.getElementById('root')).render(<App />)
