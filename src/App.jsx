@@ -11,22 +11,46 @@ export default function App() {
   const [idea, setIdea] = useState('')
   const [selectedPlan, setSelectedPlan] = useState(null)
 
-  // Preload Spline robot as soon as app mounts
+  // ULTRA-AGGRESSIVE Spline robot preloading
   useEffect(() => {
+    // DNS prefetch
     const dns = document.createElement('link')
     dns.rel = 'dns-prefetch'
     dns.href = 'https://prod.spline.design'
     document.head.appendChild(dns)
 
+    // Preconnect with high priority
     const preconnect = document.createElement('link')
     preconnect.rel = 'preconnect'
     preconnect.href = 'https://prod.spline.design'
     preconnect.crossOrigin = 'anonymous'
     document.head.appendChild(preconnect)
 
-    fetch('https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode', {
-      mode: 'cors', cache: 'force-cache'
+    // Multiple aggressive fetch attempts
+    const robotUrl = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
+    
+    // Attempt 1: High priority fetch
+    fetch(robotUrl, {
+      mode: 'cors',
+      cache: 'force-cache',
+      priority: 'high'
     }).catch(() => {})
+
+    // Attempt 2: Prefetch link
+    const prefetch = document.createElement('link')
+    prefetch.rel = 'prefetch'
+    prefetch.href = robotUrl
+    prefetch.as = 'fetch'
+    prefetch.crossOrigin = 'anonymous'
+    document.head.appendChild(prefetch)
+
+    // Attempt 3: Preload link
+    const preload = document.createElement('link')
+    preload.rel = 'preload'
+    preload.href = robotUrl
+    preload.as = 'fetch'
+    preload.crossOrigin = 'anonymous'
+    document.head.appendChild(preload)
   }, [])
 
   const handleLoadingComplete = useCallback(() => setPage('main'), [])

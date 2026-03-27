@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { SpiralAnimation } from './ui/spiral-animation'
 import LightRays from './ui/LightRays'
+import { SplineScene } from './ui/splite'
 
 export default function LoadingPage({ onComplete }) {
   const [textVisible, setTextVisible] = useState(false)
@@ -24,6 +25,14 @@ export default function LoadingPage({ onComplete }) {
 
   return (
     <div className="fixed inset-0 w-full h-full overflow-hidden bg-black">
+      {/* Hidden robot preloader - loads in background during loading screen */}
+      <div style={{ position: 'absolute', width: 1, height: 1, opacity: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: -9999 }}>
+        <SplineScene
+          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+          className="w-full h-full"
+        />
+      </div>
+
       {/* Light Rays Background */}
       <div className="absolute inset-0 z-0">
         <LightRays
