@@ -93,12 +93,12 @@ export default function MainPage({ onNavigate, currentPage }) {
                 </div>
               </div>
 
-              {/* Right side - 3D Robot with ultra-fast loading */}
+              {/* Right side - 3D Robot with instant placeholder */}
               <div className="flex flex-col items-center lg:items-end h-[700px] relative">
                 <div className="w-full h-full relative">
                   <SplineScene 
                     scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                    className="w-full h-full animate-spotlight"
+                    className="w-full h-full"
                   />
                 </div>
               </div>
