@@ -1,50 +1,54 @@
-import Spline from '@splinetool/react-spline'
-import { memo, useState } from 'react'
+import { memo, useState, useEffect } from 'react'
 
-// Optimized Spline with beautiful placeholder
+// Ultra-lightweight Spline loader with progressive enhancement
 const OptimizedSpline = memo(({ scene, className, onLoad }) => {
+  const [SplineComponent, setSplineComponent] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    // Dynamically import Spline only when needed
+    let mounted = true
+    
+    import('@splinetool/react-spline').then(module => {
+      if (mounted) {
+        setSplineComponent(() => module.default)
+      }
+    })
+
+    return () => { mounted = false }
+  }, [])
 
   const handleLoad = (spline) => {
     setIsLoaded(true)
     if (onLoad) onLoad(spline)
   }
 
+  if (!SplineComponent) {
+    return (
+      <div className={`${className} flex items-center justify-center bg-transparent`}>
+        <div className="animate-spin w-8 h-8 border-2 border-white/20 border-t-white/60 rounded-full"></div>
+      </div>
+    )
+  }
+
   return (
     <div className={`${className} relative`}>
-      {/* Beautiful animated placeholder while loading */}
       {!isLoaded && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-transparent z-10">
-          {/* Glowing orb animation */}
-          <div className="relative w-64 h-64">
-            {/* Outer glow */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-3xl animate-pulse"></div>
-            
-            {/* Middle ring */}
-            <div className="absolute inset-8 rounded-full border-2 border-blue-400/30 animate-spin" style={{ animationDuration: '3s' }}></div>
-            
-            {/* Inner core */}
-            <div className="absolute inset-16 rounded-full bg-gradient-to-br from-blue-500/40 to-purple-500/40 backdrop-blur-sm flex items-center justify-center">
-              <div className="text-white/60 text-sm font-medium animate-pulse">Loading 3D Model...</div>
-            </div>
-            
-            {/* Spinning particles */}
-            <div className="absolute inset-12 rounded-full border border-blue-300/20 animate-spin" style={{ animationDuration: '2s' }}></div>
-          </div>
+        <div className="absolute inset-0 flex items-center justify-center bg-transparent z-10">
+          <div className="animate-spin w-8 h-8 border-2 border-white/20 border-t-white/60 rounded-full"></div>
         </div>
       )}
-      
-      {/* Actual Spline component */}
-      <div className={`transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-        <Spline
-          scene={scene}
-          style={{ 
-            background: 'transparent',
-            pointerEvents: 'auto'
-          }}
-          onLoad={handleLoad}
-        />
-      </div>
+      <SplineComponent
+        scene={scene}
+        className={className}
+        style={{ 
+          background: 'transparent',
+          pointerEvents: 'auto',
+          opacity: isLoaded ? 1 : 0,
+          transition: 'opacity 0.5s ease-in-out'
+        }}
+        onLoad={handleLoad}
+      />
     </div>
   )
 })
@@ -56,8 +60,8 @@ export function SplineScene({ scene, className }) {
     <OptimizedSpline
       scene={scene}
       className={className}
-      onLoad={(spline) => {
-        console.log('Robot loaded!')
+      onLoad={() => {
+        console.log('Spline loaded!')
       }}
     />
   )
