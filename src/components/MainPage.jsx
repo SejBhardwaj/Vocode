@@ -6,11 +6,45 @@ import { CpuArchitecture } from './ui/cpu-architecture'
 import { Timeline } from './ui/timeline'
 import { BentoGridDemo } from './ui/bento-grid-demo'
 import { Footer } from './ui/footer'
-import { useState } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { Briefcase, Award, GraduationCap, MapPin } from 'lucide-react'
 import Navbar from './Navbar'
 
 export default function MainPage({ onNavigate, currentPage }) {
+  const [showCpuSection, setShowCpuSection] = useState(false)
+  const [showBentoSection, setShowBentoSection] = useState(false)
+  const cpuSectionRef = useRef(null)
+  const bentoSectionRef = useRef(null)
+
+  useEffect(() => {
+    const cpuObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShowCpuSection(true)
+          cpuObserver.disconnect()
+        }
+      },
+      { threshold: 0.01, rootMargin: '200px' }
+    )
+
+    const bentoObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShowBentoSection(true)
+          bentoObserver.disconnect()
+        }
+      },
+      { threshold: 0.01, rootMargin: '200px' }
+    )
+
+    if (cpuSectionRef.current) cpuObserver.observe(cpuSectionRef.current)
+    if (bentoSectionRef.current) bentoObserver.observe(bentoSectionRef.current)
+
+    return () => {
+      cpuObserver.disconnect()
+      bentoObserver.disconnect()
+    }
+  }, [])
 
   return (
     <div className="relative bg-black min-h-screen">
@@ -126,7 +160,7 @@ export default function MainPage({ onNavigate, currentPage }) {
       </div>
 
       {/* CPU Architecture Section */}
-      <div className="relative z-10 -mt-10 py-32 min-h-[120vh]">
+      <div ref={cpuSectionRef} className="relative z-10 -mt-10 py-32 min-h-[120vh]">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-24">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -138,74 +172,80 @@ export default function MainPage({ onNavigate, currentPage }) {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start min-h-[800px]">
-            {/* Left side - Timeline */}
-            <div className="flex justify-start overflow-visible">
-              <div className="w-full max-w-lg pl-8 pr-4">
-                <Timeline 
-                  items={[
-                    {
-                      id: "1",
-                      title: "Project Started",
-                      description: "Initial project setup and planning phase",
-                      timestamp: new Date("2024-01-15T09:00:00"),
-                      status: "default",
-                      icon: <Briefcase className="h-3 w-3" />,
-                    },
-                    {
-                      id: "2",
-                      title: "Development Phase",
-                      description: "Core features implementation in progress",
-                      timestamp: new Date("2024-02-01T10:30:00"),
-                      status: "default",
-                      icon: <Award className="h-3 w-3" />,
-                    },
-                    {
-                      id: "3",
-                      title: "Testing & QA",
-                      description: "Quality assurance and testing phase",
-                      timestamp: new Date("2024-02-15T14:00:00"),
-                      status: "default",
-                      icon: <GraduationCap className="h-3 w-3" />,
-                    },
-                    {
-                      id: "4",
-                      title: "Launch",
-                      description: "Production deployment and launch",
-                      timestamp: new Date("2024-03-01T16:00:00"),
-                      status: "default",
-                      icon: <MapPin className="h-3 w-3" />,
-                    },
-                  ]}
-                  variant="spacious"
-                  showTimestamps={true}
-                  timestampPosition="top"
-                  className="text-white text-lg overflow-visible"
-                />
+          {showCpuSection ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start min-h-[800px]">
+              {/* Left side - Timeline */}
+              <div className="flex justify-start overflow-visible">
+                <div className="w-full max-w-lg pl-8 pr-4">
+                  <Timeline 
+                    items={[
+                      {
+                        id: "1",
+                        title: "Project Started",
+                        description: "Initial project setup and planning phase",
+                        timestamp: new Date("2024-01-15T09:00:00"),
+                        status: "default",
+                        icon: <Briefcase className="h-3 w-3" />,
+                      },
+                      {
+                        id: "2",
+                        title: "Development Phase",
+                        description: "Core features implementation in progress",
+                        timestamp: new Date("2024-02-01T10:30:00"),
+                        status: "default",
+                        icon: <Award className="h-3 w-3" />,
+                      },
+                      {
+                        id: "3",
+                        title: "Testing & QA",
+                        description: "Quality assurance and testing phase",
+                        timestamp: new Date("2024-02-15T14:00:00"),
+                        status: "default",
+                        icon: <GraduationCap className="h-3 w-3" />,
+                      },
+                      {
+                        id: "4",
+                        title: "Launch",
+                        description: "Production deployment and launch",
+                        timestamp: new Date("2024-03-01T16:00:00"),
+                        status: "default",
+                        icon: <MapPin className="h-3 w-3" />,
+                      },
+                    ]}
+                    variant="spacious"
+                    showTimestamps={true}
+                    timestampPosition="top"
+                    className="text-white text-lg overflow-visible"
+                  />
+                </div>
+              </div>
+              
+              {/* Right side - CPU Architecture */}
+              <div className="flex justify-center items-start -mt-64">
+                <div className="w-full max-w-7xl scale-150">
+                  <CpuArchitecture 
+                    className="text-white/30"
+                    text="VOCODE"
+                    showCpuConnections={true}
+                    animateText={true}
+                    animateLines={true}
+                    animateMarkers={true}
+                    width="100%"
+                    height="1000px"
+                  />
+                </div>
               </div>
             </div>
-            
-            {/* Right side - CPU Architecture */}
-            <div className="flex justify-center items-start -mt-64">
-              <div className="w-full max-w-7xl scale-150">
-                <CpuArchitecture 
-                  className="text-white/30"
-                  text="VOCODE"
-                  showCpuConnections={true}
-                  animateText={true}
-                  animateLines={true}
-                  animateMarkers={true}
-                  width="100%"
-                  height="1000px"
-                />
-              </div>
+          ) : (
+            <div className="min-h-[800px] flex items-center justify-center">
+              <div className="animate-pulse text-white/20">Loading...</div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
       {/* Features Showcase Section */}
-      <div className="relative z-10 -mt-80 pb-16">
+      <div ref={bentoSectionRef} className="relative z-10 -mt-80 pb-16">
         <div className="max-w-7xl mx-auto px-8">
           <div className="text-center mb-6">
             <h2 className="text-4xl md:text-5xl font-bold">
@@ -217,7 +257,13 @@ export default function MainPage({ onNavigate, currentPage }) {
             </p>
           </div>
           
-          <BentoGridDemo />
+          {showBentoSection ? (
+            <BentoGridDemo />
+          ) : (
+            <div className="min-h-[400px] flex items-center justify-center">
+              <div className="animate-pulse text-white/20">Loading...</div>
+            </div>
+          )}
         </div>
       </div>
 

@@ -54,14 +54,27 @@ const LightRays = ({
   const animationIdRef = useRef(null);
   const meshRef = useRef(null);
   const cleanupFunctionRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(true); // Changed to true for immediate visibility
+  const [isVisible, setIsVisible] = useState(false);
   const observerRef = useRef(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Remove intersection observer completely for now
-    setIsVisible(true);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.01, rootMargin: '100px' }
+    );
+
+    observer.observe(containerRef.current);
+    observerRef.current = observer;
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -79,8 +92,9 @@ const LightRays = ({
       if (!containerRef.current) return;
 
       const renderer = new Renderer({
-        dpr: Math.min(window.devicePixelRatio, 2),
-        alpha: true
+        dpr: 1,
+        alpha: true,
+        antialias: false
       });
       rendererRef.current = renderer;
 
@@ -223,7 +237,7 @@ const LightRays = ({
       const updatePlacement = () => {
         if (!containerRef.current || !renderer) return;
 
-        renderer.dpr = Math.min(window.devicePixelRatio, 2);
+        renderer.dpr = 1;
         const { clientWidth: wCSS, clientHeight: hCSS } = containerRef.current;
         renderer.setSize(wCSS, hCSS);
 
@@ -236,6 +250,12 @@ const LightRays = ({
         uniforms.rayPos.value = anchor;
         uniforms.rayDir.value = dir;
       };
+
+      let resizeTimeout = null
+      const debouncedResize = () => {
+        if (resizeTimeout) clearTimeout(resizeTimeout)
+        resizeTimeout = setTimeout(updatePlacement, 100)
+      }
 
       const loop = t => {
         if (!rendererRef.current || !uniformsRef.current || !meshRef.current) {
@@ -260,16 +280,17 @@ const LightRays = ({
         }
       };
 
-      window.addEventListener('resize', updatePlacement);
+      window.addEventListener('resize', debouncedResize, { passive: true });
       updatePlacement();
       animationIdRef.current = requestAnimationFrame(loop);
 
       cleanupFunctionRef.current = () => {
+        if (resizeTimeout) clearTimeout(resizeTimeout)
         if (animationIdRef.current) {
           cancelAnimationFrame(animationIdRef.current);
           animationIdRef.current = null;
         }
-        window.removeEventListener('resize', updatePlacement);
+        window.removeEventListener('resize', debouncedResize);
         if (renderer) {
           try {
             const canvas = renderer.gl.canvas;
@@ -351,19 +372,32 @@ const LightRays = ({
   ]);
 
   useEffect(() => {
+    let rafId = null
+    let lastUpdate = 0
+    const throttleMs = 16 // ~60fps
+
     const handleMouseMove = e => {
-      if (!containerRef.current || !rendererRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-      mouseRef.current = { x, y };
-    };
+      if (!containerRef.current || !rendererRef.current) return
+      
+      const now = Date.now()
+      if (now - lastUpdate < throttleMs) return
+      
+      lastUpdate = now
+      
+      const rect = containerRef.current.getBoundingClientRect()
+      const x = (e.clientX - rect.left) / rect.width
+      const y = (e.clientY - rect.top) / rect.height
+      mouseRef.current = { x, y }
+    }
 
     if (followMouse) {
-      window.addEventListener('mousemove', handleMouseMove);
-      return () => window.removeEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mousemove', handleMouseMove, { passive: true })
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove)
+        if (rafId) cancelAnimationFrame(rafId)
+      }
     }
-  }, [followMouse]);
+  }, [followMouse])
 
   return <div ref={containerRef} className={`light-rays-container ${className}`.trim()} />;
 };

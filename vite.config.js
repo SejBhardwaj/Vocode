@@ -24,5 +24,20 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src')
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'spline': ['@splinetool/react-spline', '@splinetool/runtime'],
+          'three': ['three'],
+          'ogl': ['ogl'],
+          'framer': ['framer-motion']
+        }
+      }
+    }
+  },
+  optimizeDeps: {
+    include: ['@splinetool/react-spline', '@splinetool/runtime', 'three', 'ogl', 'framer-motion']
   }
 })
