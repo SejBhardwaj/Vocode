@@ -1,40 +1,90 @@
-# VOCODE - AI Voice Website Builder
+<div align="center">
 
-Build websites with your voice using AI. Transform your ideas into production-ready websites instantly.
+# 🎙️ VOCODE
 
-## Features
+### AI-Powered Voice Website Builder
 
-- 🎤 **Voice Input**: Describe your website using voice or text
-- 🤖 **AI-Powered**: Uses Google Gemini AI to understand and refine your ideas
-- 🎨 **Multiple Design Plans**: Get 3 different design options to choose from
-- ⚡ **Instant Generation**: Generate complete React websites in seconds
-- ✏️ **Live Editing**: Make changes to your website using natural language
-- 📦 **Download Ready**: Export your website as a complete project
+*Transform your ideas into production-ready websites using just your voice*
 
-## Tech Stack
+[![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+[Features](#-features) • [Tech Stack](#-tech-stack) • [Getting Started](#-getting-started) • [Usage](#-usage) • [Documentation](#-documentation)
+
+</div>
+
+---
+
+## 🌟 Overview
+
+VOCODE revolutionizes web development by enabling anyone to create professional websites through natural language. Simply describe your vision using voice or text, and watch as AI transforms it into a fully functional, responsive website in seconds.
+
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🎤 Voice & Text Input
+Describe your website naturally using voice commands or text. Our intelligent system understands your vision and translates it into structured requirements.
+
+### 🎨 Multiple Design Options
+Receive three unique, professionally designed website plans tailored to your needs. Choose the one that best matches your vision.
+
+</td>
+<td width="50%">
+
+### ⚡ Instant Generation
+Generate complete, production-ready React websites in seconds. No coding knowledge required.
+
+### ✏️ Natural Language Editing
+Make changes to your website using simple commands like "make the header blue" or "add a contact form."
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 👁️ Live Preview
+See your website come to life in real-time with an interactive preview that updates instantly as you make changes.
+
+</td>
+<td width="50%">
+
+### 📦 Export & Deploy
+Download your complete website project as a ready-to-deploy package with all dependencies included.
+
+</td>
+</tr>
+</table>
+
+## 🛠️ Tech Stack
 
 ### Frontend
-- React 18
-- Vite
-- Tailwind CSS
-- Framer Motion
-- Lucide React Icons
-- OGL (WebGL library)
-- Spline 3D
+```
+React 18          Modern UI framework
+Vite              Lightning-fast build tool
+Tailwind CSS      Utility-first styling
+Framer Motion     Smooth animations
+Spline 3D         Interactive 3D graphics
+OGL               WebGL rendering
+```
 
 ### Backend
-- Node.js
-- Express
-- Google Generative AI (Gemini)
-- Archiver (for ZIP downloads)
+```
+Node.js           Server runtime
+Express           Web framework
+```
 
-## Installation
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ installed
-- Google Gemini API key ([Get one here](https://makersuite.google.com/app/apikey))
 
-### Setup
+- **Node.js** 18 or higher
+- **npm** or **yarn** package manager
+
+### Installation
 
 1. **Clone the repository**
    ```bash
@@ -47,286 +97,183 @@ Build websites with your voice using AI. Transform your ideas into production-re
    npm install
    ```
 
-3. **Configure environment variables**
-   
-   Copy `.env.example` to `.env`:
+3. **Set up environment**
    ```bash
    cp .env.example .env
    ```
    
-   Edit `.env` and add your Gemini API key:
-   ```env
-   VITE_GEMINI_API_KEY=your_actual_api_key_here
-   VITE_API_URL=http://localhost:5000
-   PORT=5000
-   ```
+   Configure your `.env` file with the required variables.
 
-## Running the Application
+### Running the Application
 
-### Development Mode (Recommended)
-
-Run both frontend and backend together:
+**Development Mode** (Recommended)
 ```bash
 npm run dev:all
 ```
 
-This will start:
-- Backend server on `http://localhost:5000`
-- Frontend dev server on `http://localhost:3000`
+This starts both frontend (`http://localhost:3000`) and backend (`http://localhost:5000`) servers.
 
-### Run Separately
-
-**Backend only:**
+**Individual Services**
 ```bash
+# Frontend only
+npm run dev
+
+# Backend only
 npm run server
 ```
 
-**Frontend only:**
-```bash
-npm run dev
-```
-
-### Production Build
-
+**Production Build**
 ```bash
 npm run build
 npm run preview
 ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 vocode/
 ├── src/
-│   ├── components/
-│   │   ├── MainPage.jsx          # Landing page
-│   │   ├── HowItWorksPage.jsx    # Voice/text input page
-│   │   ├── EditorPage.jsx        # Website editor & preview
-│   │   ├── PricingPage.jsx       # Pricing information
-│   │   ├── Navbar.jsx            # Navigation component
-│   │   └── ui/                   # UI components
-│   ├── services/
-│   │   └── api.js                # API service for backend communication
-│   ├── hooks/
-│   │   └── useVoiceRecognition.js # Voice recognition hook
-│   ├── lib/
-│   │   └── utils.js              # Utility functions
-│   ├── App.jsx                   # Main app component
-│   └── main.jsx                  # Entry point
-├── index.js                      # Backend server
-├── package.json
-└── .env                          # Environment variables
-
+│   ├── components/          # React components
+│   │   ├── MainPage.jsx
+│   │   ├── HowItWorksPage.jsx
+│   │   ├── EditorPage.jsx
+│   │   └── ui/              # Reusable UI components
+│   ├── services/            # API integration
+│   ├── hooks/               # Custom React hooks
+│   ├── lib/                 # Utility functions
+│   └── App.jsx
+├── index.js                 # Backend server
+└── package.json
 ```
 
-## API Endpoints
+## 📖 Usage
 
-### POST `/api/idea-refine`
-Refine user's raw idea into structured data.
+### Step-by-Step Workflow
 
-**Request:**
-```json
-{
-  "rawIdea": "I want a portfolio website for my photography"
-}
+```mermaid
+graph LR
+    A[Describe Idea] --> B[AI Refines]
+    B --> C[Generate Plans]
+    C --> D[Select Design]
+    D --> E[Generate Code]
+    E --> F[Preview & Edit]
+    F --> G[Download]
 ```
 
-**Response:**
-```json
-{
-  "websiteType": "portfolio",
-  "purpose": "Showcase photography work",
-  "targetAudience": "Potential clients and art enthusiasts",
-  "keyFeatures": ["Gallery", "About", "Contact"],
-  "tone": "creative",
-  "suggestedSections": ["Hero", "Portfolio", "About", "Contact"],
-  "colorScheme": "Dark with vibrant accents",
-  "refinedDescription": "A modern portfolio website..."
-}
-```
+1. **Describe Your Vision**
+   - Use voice or text to describe your website idea
+   - Be as detailed or as brief as you like
 
-### POST `/api/plan-generate`
-Generate multiple website design plans.
+2. **Review Design Plans**
+   - Receive three unique design options
+   - Each plan tailored to your requirements
 
-**Request:**
-```json
-{
-  "refinedIdea": { /* refined idea object */ }
-}
-```
+3. **Generate Your Website**
+   - Select your preferred design
+   - AI generates complete React code instantly
 
-**Response:**
-```json
-{
-  "plans": [
-    {
-      "id": 1,
-      "name": "Modern Minimal",
-      "description": "Clean and professional design",
-      "style": "minimal",
-      "sections": [...]
-    }
-  ]
-}
-```
+4. **Customize & Preview**
+   - Make changes using natural language
+   - See updates in real-time
 
-### POST `/api/code-generate`
-Generate React code from selected plan.
+5. **Export Your Project**
+   - Download as a complete, ready-to-deploy package
+   - Includes all dependencies and configuration
 
-**Request:**
-```json
-{
-  "plan": { /* selected plan object */ },
-  "refinedIdea": { /* refined idea object */ }
-}
-```
-
-**Response:**
-```json
-{
-  "code": "import React from 'react'...",
-  "dependencies": ["react", "lucide-react"],
-  "description": "A modern portfolio website..."
-}
-```
-
-### POST `/api/edit`
-Edit existing website code.
-
-**Request:**
-```json
-{
-  "currentCode": "existing code...",
-  "editRequest": "Make the header blue"
-}
-```
-
-**Response:**
-```json
-{
-  "code": "updated code...",
-  "changes": "Changed header background to blue"
-}
-```
-
-### POST `/api/download`
-Download website project as ZIP.
-
-**Request:**
-```json
-{
-  "code": "website code..."
-}
-```
-
-**Response:** ZIP file download
-
-### GET `/health`
-Health check endpoint.
-
-**Response:**
-```json
-{
-  "status": "ok",
-  "message": "VOCODE API is running"
-}
-```
-
-## Usage Flow
-
-1. **Start**: User lands on the main page
-2. **Input**: User navigates to "How It Works" and describes their website idea (voice or text)
-3. **Refine**: AI refines the idea into structured data
-4. **Plans**: AI generates 3 different design plans
-5. **Select**: User selects their preferred plan
-6. **Generate**: AI generates complete React code
-7. **Preview**: User sees live preview of their website
-8. **Edit**: User can make changes using natural language
-9. **Download**: User downloads the complete project as ZIP
-
-## Features in Detail
+## 🎯 Key Capabilities
 
 ### Voice Recognition
-- Uses Web Speech API for voice input
-- Real-time transcription
-- Fallback to text input if voice not supported
+- **Web Speech API** integration for seamless voice input
+- Real-time transcription with high accuracy
+- Automatic fallback to text input
 
-### AI Generation
-- Powered by Google Gemini Pro
-- Understands natural language descriptions
-- Generates production-ready React code
-- Creates responsive, modern designs
+### AI-Powered Generation
+- Natural language understanding
+- Context-aware code generation
+- Responsive, modern design patterns
+- Production-ready output
 
-### Live Preview
-- Real-time preview of generated website
-- Iframe-based rendering
-- Supports all React features
-
-### Code Editing
-- Natural language edit requests
-- AI understands context and makes precise changes
+### Live Editing
+- Natural language edit commands
+- Contextual understanding of changes
 - Instant preview updates
+- Maintains code quality and structure
 
-## Troubleshooting
+## 🔧 Configuration
 
-### Backend not starting
-- Check if port 5000 is available
-- Verify Gemini API key is correct
-- Check Node.js version (18+ required)
-
-### Frontend not connecting to backend
-- Verify `VITE_API_URL` in `.env`
-- Check if backend server is running
-- Check browser console for CORS errors
-
-### Voice recognition not working
-- Use Chrome/Edge browser (best support)
-- Allow microphone permissions
-- Check if HTTPS is enabled (required for production)
-
-### AI generation failing
-- Verify Gemini API key is valid
-- Check API quota/limits
-- Review backend logs for errors
-
-## Environment Variables
+### Environment Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `VITE_GEMINI_API_KEY` | Google Gemini API key | Required |
-| `VITE_API_URL` | Backend API URL | `http://localhost:5000` |
+| `VITE_API_URL` | Backend API endpoint | `http://localhost:5000` |
 | `PORT` | Backend server port | `5000` |
 
-## Contributing
+## 🐛 Troubleshooting
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+<details>
+<summary><b>Server Issues</b></summary>
 
-## License
+- Ensure port 5000 is available
+- Verify Node.js version (18+ required)
+- Check environment variables are set correctly
+</details>
 
-MIT License - feel free to use this project for personal or commercial purposes.
+<details>
+<summary><b>Frontend Connection Issues</b></summary>
 
-## Support
+- Verify `VITE_API_URL` in `.env`
+- Confirm backend server is running
+- Check browser console for errors
+</details>
 
-For issues and questions:
-- Open an issue on GitHub
-- Check existing issues for solutions
-- Review the troubleshooting section
+<details>
+<summary><b>Voice Recognition Not Working</b></summary>
 
-## Roadmap
+- Use Chrome or Edge browser (best support)
+- Grant microphone permissions
+- HTTPS required for production environments
+</details>
 
-- [ ] Add more AI models support
-- [ ] Template library
-- [ ] Collaborative editing
-- [ ] Version history
-- [ ] Direct deployment to hosting platforms
-- [ ] Custom domain support
-- [ ] SEO optimization tools
-- [ ] Analytics integration
+## 🗺️ Roadmap
+
+- [ ] Multi-model AI support
+- [ ] Pre-built template library
+- [ ] Collaborative editing features
+- [ ] Version control & history
+- [ ] One-click deployment
+- [ ] Custom domain integration
+- [ ] Built-in SEO tools
+- [ ] Analytics dashboard
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how you can help:
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 💬 Support
+
+Need help? Here's how to get support:
+
+- 📖 Check the [Documentation](#-documentation)
+- 🐛 [Open an issue](../../issues) for bug reports
+- 💡 [Start a discussion](../../discussions) for questions
+- 🔍 Review the [Troubleshooting](#-troubleshooting) section
 
 ---
 
-Built with ❤️ using React, Node.js, and Google Gemini AI
+<div align="center">
+
+**Built with ❤️ using React, Node.js, and AI**
+
+[⬆ Back to Top](#-vocode)
+
+</div>
